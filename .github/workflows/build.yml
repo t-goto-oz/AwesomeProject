@@ -1,6 +1,8 @@
 name: Build Artifact
-#on: [pull_request]
-on: [push]
+on:
+  push:
+    - master
+
 jobs:
   build-ios-relase:
     name: build-ios-release
