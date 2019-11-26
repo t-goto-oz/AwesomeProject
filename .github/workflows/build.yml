@@ -1,0 +1,33 @@
+name: Build Artifact
+#on: [pull_request]
+on: [push]
+jobs:
+  build-ios-relase:
+    name: build-ios-release
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Install package
+        run:
+          npm install
+
+      - name: CocoaPods
+        run:
+          cd ios; pod install;
+
+      - name: Build IPA
+        if: success()
+        run:
+          npm run ios:release
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: AwesomeProject.app
+          path: ./ios/build/AwesomeProject/Build/Products/Release-iphonesimulator/AwesomeProject.app
